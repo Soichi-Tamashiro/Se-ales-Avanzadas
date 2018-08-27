@@ -49,4 +49,20 @@ tx = fft(x,N)/N; % se obtiene la TDF(tranformada discreta de fourier) dividimos 
 mtx=abs(tx); % se obtiene el modulo de la TDF de tamaño igual a N
 dmtx=fftshift(mtx); % desplazando el módulo de la TDF
 F = linspace(-Fs/2,Fs/2,N);% creamos un vector de frecuencia de tamaño igual a N
-plot(F,mtx)
+%plot(F,mtx)
+%-------------------------------------------------------------------------------
+% Abrir un archivo WAV y aplicar la TDF luego, sumar al archivo WAV un tono
+% de 1KHz y mostrar la TDF
+[x,Fs]= audioread('delfin.wav');
+Fs
+subplot(211),plot(x)
+N=16384
+tx=abs(fft(x,N))/N;
+F = linspace(0,Fs,N);
+subplot(212),plot(F,tx)
+t=linspace(0,2,2*Fs);
+y=0.05*cos(2*pi*1000*t); % creamos un tono de 1Khz achicamos la señal porque el tono era muy alto
+xy=x+y'; % sumamos 2 vectores: Fila y Columna
+subplot(211),plot(t,xy)
+txy=abs(fft(xy,N))/N;
+subplot(212),plot(F,txy)
